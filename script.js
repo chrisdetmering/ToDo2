@@ -1,26 +1,46 @@
 const textInput = document.querySelector('#text');
-const enterButton = document.querySelector('#enter');
 const list = document.querySelector('#list');
 
 function createListItem() {
-    let itemNode = document.createElement('li');
-    let deleteButton = document.createElement('button');
-    let checkbox = document.createElement('input')
-    checkbox.type = 'checkbox';
-    checkbox.classList.add('check');
-    deleteButton.appendChild(document.createTextNode('delete'));
-    deleteButton.classList = 'delete';
-    itemNode.classList = 'listitem';
-    let textNode = document.createTextNode(`${textInput.value} `);
-    itemNode.appendChild(checkbox);
-    itemNode.appendChild(textNode);
-    itemNode.appendChild(deleteButton);
     if (textInput.value === '') {
         return;
     }
+
+    const itemNode = createItemNode();
+    const deleteButton = createDeleteButton();
+    const checkbox = createCheckBox();
+    const textNode = document.createTextNode(`${textInput.value} `);
+
+    itemNode.appendChild(checkbox);
+    itemNode.appendChild(textNode);
+    itemNode.appendChild(deleteButton);
+
     textInput.value = '';
     return list.appendChild(itemNode);
 }
+
+function createItemNode() {
+    const itemNode = document.createElement('li');
+    itemNode.classList = 'listitem';
+    return itemNode;
+}
+
+function createCheckBox() {
+    const checkbox = document.createElement('input')
+    checkbox.type = 'checkbox';
+    checkbox.classList.add('check');
+    return checkbox;
+}
+
+function createDeleteButton() {
+    const deleteButton = document.createElement('button');
+    deleteButton.appendChild(document.createTextNode('delete'));
+    deleteButton.classList = 'delete';
+
+    return deleteButton;
+}
+
+
 
 function deleteItem(element) {
     if (element.target.classList.contains('delete')) {
@@ -39,7 +59,9 @@ function handleUlEvent(element) {
     addStrikeThrough(element);
 }
 
-enterButton.addEventListener('click', createListItem);
+document.querySelector('#enter')
+    .addEventListener('click', createListItem);
+
 textInput.addEventListener('keydown', event => {
     if (event.keyCode === 13) {
         createListItem();
